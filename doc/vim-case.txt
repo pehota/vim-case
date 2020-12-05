@@ -1,0 +1,43 @@
+*vim-case.txt*  Quickly switch different code cases
+
+Author:  Dimitar Apostolov <d.apostolov@gmail.com>
+License: Same terms as Vim itself (see |license|)
+
+Quickly switch cases between different code cases.
+Supported cases are
+	- snake_case
+	- camelCase
+	- kebap-case
+
+Values for {case} in the key mappings are:
+	- s - snake case
+	- c - camel case
+	- k - kamel case
+
+																												*gs*
+gs{motion}{case}								Switch case to {case} in the range that {motion} covers
+
+																												*gsc*
+gsc															Switch to camel case
+
+																												*gss*
+gss															Switch to snake case
+
+																												*gsk*
+gsk															Switch to kebap case
+
+																												*v_gs*
+{Visual}gs{case}								Switch to {case} inside the selection
+
+																												*o_gs*
+gs															Text object for a comment (operator pending mode
+																only.)
+
+                                                *:SwitchCase*
+:[range]SwitchCase {case}       Apply case to the [range] lines
+
+The |User| CommentaryPost autocommand fires after a successful operation and
+can be used for advanced customization.
+
+ vim:tw=78:et:ft=help:norl:
+
