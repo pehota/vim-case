@@ -30,15 +30,15 @@ function! s:switch_case(case, start_line, end_line)
 
 endfunction
 
-command! -range -bar -nargs=1 SwitchCase call s:switch_case(<f-args>, <line1>, <line2>)
+command! -range -bar -nargs=1 CaseSwitch call s:switch_case(<f-args>, <line1>, <line2>)
 
-if !hasmapto('<Plug>SwitchCase') || maparg('gs','n') == ''
-  xmap gsc  <Plug>SwitchCase camel
-  nmap gsc  <Plug>SwitchCase camel
+if !hasmapto('<Plug>CaseSwitch') || maparg('gs','n') == ''
+  xmap gsc  <Plug>CaseSwitch camel
+  nmap gsc  <Plug>CaseSwitch camel
 
-  xmap gss  <Plug>SwitchCase snake
-  nmap gss  <Plug>SwitchCase snake
+  xmap gss  <Plug>CaseSwitch snake
+  nmap gss  <Plug>CaseSwitch snake
 
-  xmap gsk  <Plug>SwitchCase kebap
-  nmap gsk  <Plug>SwitchCase kebap
+  xmap gsk  <Plug>CaseSwitch kebap
+  nmap gsk  <Plug>CaseSwitch kebap
 endif
