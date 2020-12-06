@@ -9,43 +9,36 @@ endif
 
 let g:loaded_switch_case = 1
 
-let s:cases = { 'camel': 'camel', 'snake': 'snake', 'kebap': 'kebap' }
+let s:cases = {
+			\ 'camel': {'match': '\(\<\u\l\+\|\l\+\)\(\u\)',  'replace': '\u\1'},
+			\ 'snake': {'match': '\%(\%(\k\+\)\)\@<=_\(\k\)', 'replace': '\_\1'},
+			\ 'kebap': {'match': '\%(\%(\k\+\)\)\@<=-\(\k\)', 'replace': '\-\1'},
+			\ }
 
 function! s:switch_case(case, start_line, end_line)
-  let l:search_for = s:get_case_regex(a:case)
-  let l:replace_with = s:get_case_replacement(a:case)
+	if !has_key(s:cases, a:case)
+		return
+	endif
 
-  exe a:start_line . ',' . a:end_line . 's#' . search_for . '#' . replace_with . '#ge'
-endfunction
-  
-function! s:get_case_regex(case) abort
-	if a:case ==# s:cases.camel
-		return '\(\<\u\l\+\|\l\+\)\(\u\)'
-	elseif a:case ==# s:cases.snake
-		return '\%(\%(\k\+\)\)\@<=_\(\k\)'
-	elseif a:case ==# s:cases.kebap
-		return '\%(\%(\k\+\)\)\@<=_\(\k\)'
-endfunction
+	let l:replace = s:cases[a:case].replace
 
-function! s:get_case_replacement(case) abort
-	if a:case ==# s:cases.camel
-		return '\u\1'
-	elseif a:case ==# s:cases.snake
-		return '\_\1'
-	elseif a:case ==# s:cases.kebap
-		return '\-\1'
+	for l:case in keys(s:cases)
+		if l:case !=# a:case
+			exe a:start_line . ',' . a:end_line . 's#' . s:cases[l:case].match . '#' . l:replace . '#ge'
+		endif
+	endfor
+
 endfunction
 
-
-command! -range -bar -nargs=1 SwitchCase call s:switch-case(<f-args>, <line1>, <line2>)
+command! -range -bar -nargs=1 SwitchCase call s:switch_case(<f-args>, <line1>, <line2>)
 
 if !hasmapto('<Plug>SwitchCase') || maparg('gs','n') == ''
-  xmap gsc  <Plug>SwitchCase s:cases.camel
-  nmap gsc  <Plug>SwitchCase s:cases.camel
+  xmap gsc  <Plug>SwitchCase camel
+  nmap gsc  <Plug>SwitchCase camel
 
-  xmap gss  <Plug>SwitchCase s:cases.snake
-  nmap gss  <Plug>SwitchCase s:cases.snake
+  xmap gss  <Plug>SwitchCase snake
+  nmap gss  <Plug>SwitchCase snake
 
-  xmap gsk  <Plug>SwitchCase s:cases.kebap
-  nmap gsk  <Plug>SwitchCase s:cases.kebap
+  xmap gsk  <Plug>SwitchCase kebap
+  nmap gsk  <Plug>SwitchCase kebap
 endif
