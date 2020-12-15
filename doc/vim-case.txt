@@ -10,34 +10,28 @@ Supported cases are
 	- kebap-case
 
 Values for {case} in the key mappings are:
-	- s - snake case
-	- c - camel case
-	- k - kamel case
+	- snake - snake case
+	- camel - camel case
+	- kebab - kamel case
 
-																												*gs*
-gs{motion}{case}								Switch case to {case} in the range that {motion} covers
+Example
+:CaseSwitch camel
 
-																												*gsc*
-gsc															Switch to camel case
+The plugin comes with the following pre-defined mappings available in normal and visual modes (nmap, xmap, vmap):
+<localleader>c - convert to camel case
+<localleader>s - convert to snake case
+<localleader>k - convert to kebab case
 
-																												*gss*
-gss															Switch to snake case
+All mappings can be overridden by the user by mapping the following commands:
 
-																												*gsk*
-gsk															Switch to kebap case
+<Plug>CaseSwitchCamel
+	Switch to camel case
 
-																												*v_gs*
-{Visual}gs{case}								Switch to {case} inside the selection
+<Plug>CaseSwitchSnake
+	Switch to snake case
 
-																												*o_gs*
-gs															Text object for a comment (operator pending mode
-																only.)
-
-                                                *:SwitchCase*
-:[range]SwitchCase {case}       Apply case to the [range] lines
-
-The |User| CommentaryPost autocommand fires after a successful operation and
-can be used for advanced customization.
+<Plug>CaseSwitchKebab
+	Switch to kebab case
 
  vim:tw=78:et:ft=help:norl:
 
