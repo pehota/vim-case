@@ -21,26 +21,26 @@ function! s:switch_case(case, visualmode) abort
 	endif
 
 	let [_buf, line, column, __] = getpos('.')
-	let replace = s:cases[a:case].replace
 
-	if a:visualmode
-		let selection_mode = '\%V'
-	else
-		let selection_mode = ''
+	if !a:visualmode
+		exe 'normal! viw'
+		call s:switch_case(a:case, 1)
+		exe 'normal! '
+		call cursor(line, column)
+		return
 	endif
+
+	let replace = s:cases[a:case].replace
 
 	for case in keys(s:cases)
 		if case !=# a:case
-			exe  's#' . selection_mode . s:cases[case].match . "#" . replace . "#ge"
+			exe  's#\%V' . s:cases[case].match . "#" . replace . "#ge"
 		endif
 	endfor
-
-	call cursor(line, column)
 endfunction
 
 command! -range -bar -nargs=1 CaseSwitch call s:switch_case(<f-args>, 0)
 command! -range -bar -nargs=1 CaseSwitchSelection call s:switch_case(<f-args>, 1)
-
 
 xnoremap <Plug>CaseSwitchCamel :CaseSwitchSelection camel<cr>
 vnoremap <Plug>CaseSwitchCamel :CaseSwitchSelection camel<cr>
